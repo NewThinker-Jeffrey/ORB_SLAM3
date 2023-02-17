@@ -30,9 +30,13 @@ endif()
 
 LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake_modules)
 
-find_package(OpenCV 4.4)
+#find_package(OpenCV 4.4)
+#   if(NOT OpenCV_FOUND)
+#      message(FATAL_ERROR "OpenCV > 4.4 not found.")
+#   endif()
+find_package(OpenCV 3)
    if(NOT OpenCV_FOUND)
-      message(FATAL_ERROR "OpenCV > 4.4 not found.")
+      message(FATAL_ERROR "OpenCV > 3 not found.")
    endif()
 
 MESSAGE("OPENCV VERSION:")
@@ -197,6 +201,10 @@ add_executable(mono_kitti
         Examples/Monocular/mono_kitti.cc)
 target_link_libraries(mono_kitti ${PROJECT_NAME})
 
+add_executable(mono_4seasons
+        Examples/Monocular/mono_4seasons.cc)
+target_link_libraries(mono_4seasons ${PROJECT_NAME})
+
 add_executable(mono_euroc
         Examples/Monocular/mono_euroc.cc)
 target_link_libraries(mono_euroc ${PROJECT_NAME})
@@ -225,6 +233,16 @@ target_link_libraries(mono_inertial_euroc ${PROJECT_NAME})
 add_executable(mono_inertial_tum_vi
         Examples/Monocular-Inertial/mono_inertial_tum_vi.cc)
 target_link_libraries(mono_inertial_tum_vi ${PROJECT_NAME})
+
+add_executable(mono_inertial_kitti_vi
+        Examples/Monocular-Inertial/mono_inertial_kitti_vi.cc)
+target_link_libraries(mono_inertial_kitti_vi ${PROJECT_NAME})
+
+add_executable(mono_inertial_4seasons_vi
+        Examples/Monocular-Inertial/mono_inertial_4seasons_vi.cc)
+target_link_libraries(mono_inertial_4seasons_vi ${PROJECT_NAME})
+
+
 
 if(realsense2_FOUND)
     add_executable(mono_inertial_realsense_t265
