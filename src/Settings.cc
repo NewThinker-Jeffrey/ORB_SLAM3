@@ -559,9 +559,10 @@ namespace ORB_SLAM3 {
                 output << "Kannala-Brandt";
             }
             output << "" << ": [";
-            for(size_t i = 0; i < settings.originalCalib2_->size(); i++){
-                output << " " << settings.originalCalib2_->getParameter(i);
-            }
+            // TODO(jeffrey@Oct 7th,2023): originalCalib2_ might not been initilized properly.
+            // for(size_t i = 0; i < settings.originalCalib2_->size(); i++){
+            //     output << " " << settings.originalCalib2_->getParameter(i);
+            // }
             output << " ]" << endl;
 
             if(!settings.vPinHoleDistorsion2_.empty()){
