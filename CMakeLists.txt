@@ -195,6 +195,11 @@ if(realsense2_FOUND)
     add_executable(stereo_realsense_D435i
             Examples/Stereo/stereo_realsense_D435i.cc)
     target_link_libraries(stereo_realsense_D435i ${PROJECT_NAME})
+
+    add_executable(stereo_realsense_D455
+            Examples/Stereo/stereo_realsense_D455.cc)
+    target_link_libraries(stereo_realsense_D455 ${PROJECT_NAME})
+
 endif()
 
 #Monocular examples
@@ -284,6 +289,10 @@ if(realsense2_FOUND)
     add_executable(stereo_inertial_realsense_D435i
             Examples/Stereo-Inertial/stereo_inertial_realsense_D435i.cc)
     target_link_libraries(stereo_inertial_realsense_D435i ${PROJECT_NAME})
+
+    add_executable(stereo_inertial_realsense_D455
+            Examples/Stereo-Inertial/stereo_inertial_realsense_D455.cc)
+    target_link_libraries(stereo_inertial_realsense_D455 ${PROJECT_NAME})
 endif()
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Calibration)
