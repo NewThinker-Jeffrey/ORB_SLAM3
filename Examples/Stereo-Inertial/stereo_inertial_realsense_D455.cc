@@ -156,11 +156,11 @@ int main(int argc, char **argv) {
     // Create a configuration for configuring the pipeline with a non default profile
     rs2::config cfg;
 
-    // cfg.enable_stream(RS2_STREAM_INFRARED, 1, 640, 480, RS2_FORMAT_Y8, 30);
-    // cfg.enable_stream(RS2_STREAM_INFRARED, 2, 640, 480, RS2_FORMAT_Y8, 30);
+    cfg.enable_stream(RS2_STREAM_INFRARED, 1, 640, 480, RS2_FORMAT_Y8, 30);
+    cfg.enable_stream(RS2_STREAM_INFRARED, 2, 640, 480, RS2_FORMAT_Y8, 30);
 
-    cfg.enable_stream(RS2_STREAM_INFRARED, 1, 640, 480, RS2_FORMAT_ANY, 30);
-    cfg.enable_stream(RS2_STREAM_INFRARED, 2, 640, 480, RS2_FORMAT_ANY, 30);
+    // cfg.enable_stream(RS2_STREAM_INFRARED, 1, 640, 480, RS2_FORMAT_ANY, 30);
+    // cfg.enable_stream(RS2_STREAM_INFRARED, 2, 640, 480, RS2_FORMAT_ANY, 30);
 
     // cfg.enable_stream(RS2_STREAM_ACCEL, RS2_FORMAT_MOTION_XYZ32F, 200);
     // cfg.enable_stream(RS2_STREAM_ACCEL, RS2_FORMAT_MOTION_XYZ32F, 100);
@@ -204,6 +204,15 @@ int main(int argc, char **argv) {
 
         if(rs2::frameset fs = frame.as<rs2::frameset>())
         {
+            if ((++image_cb_cnt) % 30 == 0) {
+                // cout << "RS_DEBUG: image callback count = " << image_cb_cnt << ",  timestamp = " << timestamp_image << std::endl;
+            }
+
+            // downsample to 10 FPS
+            if (image_cb_cnt % 3 != 0) {
+                return;
+            }
+
             count_im_buffer++;
 
             double new_timestamp_image = fs.get_timestamp()*1e-3;
@@ -233,9 +242,6 @@ int main(int argc, char **argv) {
             }
 
             cond_image_rec.notify_all();
-            if ((++image_cb_cnt) % 30 == 0) {
-                cout << "RS_DEBUG: image callback count = " << image_cb_cnt << ",  timestamp = " << timestamp_image << std::endl;
-            }
             // lock.unlock();  // unnecessary
         }
         else if (rs2::motion_frame m_frame = frame.as<rs2::motion_frame>())
@@ -249,7 +255,7 @@ int main(int argc, char **argv) {
                 //std::cout << "Gyro:" << gyro_sample.x << ", " << gyro_sample.y << ", " << gyro_sample.z << std::endl;
 
                 if ((++gyro_cb_cnt) % 200 == 0) {
-                    cout << "RS_DEBUG: gyro callback count = " << gyro_cb_cnt << ",  timestamp = " << v_gyro_timestamp.back() << std::endl;
+                    // cout << "RS_DEBUG: gyro callback count = " << gyro_cb_cnt << ",  timestamp = " << v_gyro_timestamp.back() << std::endl;
                 }
             }
             else if (m_frame.get_profile().stream_name() == "Accel")
@@ -275,7 +281,7 @@ int main(int argc, char **argv) {
                 }
                 // std::cout << "Accel:" << current_accel_data.x << ", " << current_accel_data.y << ", " << current_accel_data.z << std::endl;
                 if ((++acc_cb_cnt) % 100 == 0) {
-                    cout << "RS_DEBUG: acc callback count = " << acc_cb_cnt << ",  timestamp = " << current_accel_timestamp << std::endl;
+                    // cout << "RS_DEBUG: acc callback count = " << acc_cb_cnt << ",  timestamp = " << current_accel_timestamp << std::endl;
                 }
             }
         } else {
@@ -462,7 +468,7 @@ int main(int argc, char **argv) {
     #endif
 #endif
 
-        if ((++loop_cnt) % 30 == 0) {
+        if (loop_cnt % 30 == 0) {
             cout << "SLAM_DEBUG: feed image with timestamp " << timestamp << std::endl;
         }
 

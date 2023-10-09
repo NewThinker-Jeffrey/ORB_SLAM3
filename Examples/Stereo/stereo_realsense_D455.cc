@@ -154,6 +154,8 @@ int main(int argc, char **argv) {
     rs2::pipeline pipe;
     // Create a configuration for configuring the pipeline with a non default profile
     rs2::config cfg;
+    // cfg.enable_stream(RS2_STREAM_INFRARED, 1, 640, 480, RS2_FORMAT_Y8, 30);
+    // cfg.enable_stream(RS2_STREAM_INFRARED, 2, 640, 480, RS2_FORMAT_Y8, 30);
     cfg.enable_stream(RS2_STREAM_INFRARED, 1, 640, 480, RS2_FORMAT_Y8, 30);
     cfg.enable_stream(RS2_STREAM_INFRARED, 2, 640, 480, RS2_FORMAT_Y8, 30);
 
@@ -176,6 +178,15 @@ int main(int argc, char **argv) {
 
         if(rs2::frameset fs = frame.as<rs2::frameset>())
         {
+            if ((++image_cb_cnt) % 30 == 0) {
+                // cout << "RS_DEBUG: image callback count = " << image_cb_cnt << ",  timestamp = " << timestamp_image << std::endl;
+            }
+
+            // downsample to 10 FPS
+            if (image_cb_cnt % 3 != 0) {
+                return;
+            }
+
             count_im_buffer++;
 
             double new_timestamp_image = fs.get_timestamp()*1e-3;
@@ -195,9 +206,6 @@ int main(int argc, char **argv) {
             image_ready = true;
 
             cond_image_rec.notify_all();
-            if ((++image_cb_cnt) % 30 == 0) {
-                // cout << "RS_DEBUG: image callback count = " << image_cb_cnt << ",  timestamp = " << timestamp_image << std::endl;
-            }
             // lock.unlock();  // unnecessary
         }
     };
@@ -323,7 +331,7 @@ int main(int argc, char **argv) {
         std::chrono::monotonic_clock::time_point t_Start_Track = std::chrono::monotonic_clock::now();
     #endif
 #endif
-        if ((++loop_cnt) % 30 == 0) {
+        if (loop_cnt % 30 == 0) {
             cout << "SLAM_DEBUG: feed image with timestamp " << timestamp << std::endl;
         }
 
