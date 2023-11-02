@@ -58,7 +58,11 @@ ${EIGEN3_INCLUDE_DIR}
 ${Pangolin_INCLUDE_DIRS}
 )
 
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/lib)
+if (NOT ORB_SLAM3_INSTALL_DIR)
+  set(ORB_SLAM3_INSTALL_DIR ${PROJECT_SOURCE_DIR})
+endif()
+
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/lib)
 
 add_library(${PROJECT_NAME} SHARED
 src/System.cc
@@ -126,8 +130,8 @@ target_link_libraries(${PROJECT_NAME}
 ${OpenCV_LIBS}
 ${EIGEN3_LIBS}
 ${Pangolin_LIBRARIES}
-${PROJECT_SOURCE_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
-${PROJECT_SOURCE_DIR}/Thirdparty/g2o/lib/libg2o.so
+${ORB_SLAM3_INSTALL_DIR}/Thirdparty/DBoW2/lib/libDBoW2.so
+${ORB_SLAM3_INSTALL_DIR}/Thirdparty/g2o/lib/libg2o.so
 -lboost_serialization
 -lcrypto
 )
@@ -146,7 +150,7 @@ endif()
 # Build examples
 
 # RGB-D examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/RGB-D)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples/RGB-D)
 
 add_executable(rgbd_tum
         Examples/RGB-D/rgbd_tum.cc)
@@ -160,7 +164,7 @@ endif()
 
 
 # RGB-D inertial examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/RGB-D-Inertial)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples/RGB-D-Inertial)
 
 if(realsense2_FOUND)
     add_executable(rgbd_inertial_realsense_D435i
@@ -169,7 +173,7 @@ if(realsense2_FOUND)
 endif()
 
 #Stereo examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Stereo)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples/Stereo)
 
 add_executable(stereo_kitti
         Examples/Stereo/stereo_kitti.cc)
@@ -203,7 +207,7 @@ if(realsense2_FOUND)
 endif()
 
 #Monocular examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples/Monocular)
 
 add_executable(mono_tum
         Examples/Monocular/mono_tum.cc)
@@ -236,7 +240,7 @@ if(realsense2_FOUND)
 endif()
 
 #Monocular inertial examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Monocular-Inertial)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples/Monocular-Inertial)
 
 add_executable(mono_inertial_euroc
         Examples/Monocular-Inertial/mono_inertial_euroc.cc)
@@ -267,7 +271,7 @@ if(realsense2_FOUND)
 endif()
 
 #Stereo Inertial examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Stereo-Inertial)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples/Stereo-Inertial)
 
 add_executable(stereo_inertial_euroc
         Examples/Stereo-Inertial/stereo_inertial_euroc.cc)
@@ -295,7 +299,7 @@ if(realsense2_FOUND)
     target_link_libraries(stereo_inertial_realsense_D455 ${PROJECT_NAME})
 endif()
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples/Calibration)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples/Calibration)
 if(realsense2_FOUND)
     add_executable(recorder_realsense_D435i
             Examples/Calibration/recorder_realsense_D435i.cc)
@@ -309,7 +313,7 @@ endif()
 #Old examples
 
 # RGB-D examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples_old/RGB-D)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples_old/RGB-D)
 
 add_executable(rgbd_tum_old
         Examples_old/RGB-D/rgbd_tum.cc)
@@ -323,7 +327,7 @@ endif()
 
 
 # RGB-D inertial examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples_old/RGB-D-Inertial)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples_old/RGB-D-Inertial)
 
 if(realsense2_FOUND)
     add_executable(rgbd_inertial_realsense_D435i_old
@@ -332,7 +336,7 @@ if(realsense2_FOUND)
 endif()
 
 #Stereo examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples_old/Stereo)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples_old/Stereo)
 
 add_executable(stereo_kitti_old
         Examples_old/Stereo/stereo_kitti.cc)
@@ -357,7 +361,7 @@ if(realsense2_FOUND)
 endif()
 
 #Monocular examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples_old/Monocular)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples_old/Monocular)
 
 add_executable(mono_tum_old
         Examples_old/Monocular/mono_tum.cc)
@@ -386,7 +390,7 @@ if(realsense2_FOUND)
 endif()
 
 #Monocular inertial examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples_old/Monocular-Inertial)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples_old/Monocular-Inertial)
 
 add_executable(mono_inertial_euroc_old
         Examples_old/Monocular-Inertial/mono_inertial_euroc.cc)
@@ -407,7 +411,7 @@ if(realsense2_FOUND)
 endif()
 
 #Stereo Inertial examples
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}/Examples_old/Stereo-Inertial)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${ORB_SLAM3_INSTALL_DIR}/Examples_old/Stereo-Inertial)
 
 add_executable(stereo_inertial_euroc_old
         Examples_old/Stereo-Inertial/stereo_inertial_euroc.cc)
