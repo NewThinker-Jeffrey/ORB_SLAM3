@@ -64,4 +64,5 @@ echo "Configuring and building ORB_SLAM3 ..."
 mkdir -p ${PREFIX}/build
 cd ${PREFIX}/build
 cmake $ORB_SLAM3_dir -DCMAKE_BUILD_TYPE=Release -DORB_SLAM3_INSTALL_DIR=${PREFIX}
-make -j4
+# make -j4
+make -j
